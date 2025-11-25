@@ -2,6 +2,23 @@ const NXB = require("../models/nhaxuatban.model.js");
 const SachService = require("../services/nhaxuatban.service");
 const MongoDB = require("../utils/mongodb.util");
 const ApiError = require("../api-error");
+const sach = require("../models/sach.model.js");
+
+// Lấy NXB theo MaNXB
+exports.findOne = async (req, res, next) => {
+  try {
+    const { MaNXB } = req.params; // lấy MaNXB từ params
+    const nxb = await NXB.findOne({ MaNXB });
+
+    if (!nxb) {
+      return next(new ApiError(404, `Không tìm thấy NXB với MaNXB: ${MaNXB}`));
+    }
+
+    res.json(nxb);
+  } catch (err) {
+    next(new ApiError(500, err.message));
+  }
+};
 
 // Lấy tất cả NXB
 exports.getAll = async (req, res, next) => {
@@ -54,4 +71,13 @@ exports.delete = async (req, res, next) => {
     } catch (err) {
         next(new ApiError(400, err.message));
     }
+};
+
+exports.deleteAll = async (req, res) => {
+  try {
+    const result = await NXB.deleteMany({});
+    res.json({ msg: `Đã xóa ${result.deletedCount} nxb` });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
 };

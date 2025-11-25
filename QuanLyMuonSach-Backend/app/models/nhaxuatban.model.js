@@ -1,9 +1,11 @@
 const mongoose = require("mongoose");
 
-const NhaXuatBanSchema = new mongoose.Schema({
+const nxbSchema = new mongoose.Schema({
     MaNXB: { type: String, required: true, unique: true },
     TenNXB: { type: String, required: true },
-    DiaChi: { type: String }
+    DiaChi: String
+}, { 
+  versionKey: false // loại bỏ __v khi xuất JSON (tùy chọn)
 });
 
-module.exports = mongoose.model("NhaXuatBan", NhaXuatBanSchema);
+module.exports = mongoose.model("NhaXuatBan", nxbSchema);

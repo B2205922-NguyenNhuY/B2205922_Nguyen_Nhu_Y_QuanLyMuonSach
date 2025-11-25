@@ -6,5 +6,6 @@ router.get("/", nxbController.getAll);
 router.post("/", nxbController.create);
 router.put("/:id", nxbController.update);
 router.delete("/:id", nxbController.delete);
+router.delete('/', nxbController.deleteAll);
 
 module.exports = router;
