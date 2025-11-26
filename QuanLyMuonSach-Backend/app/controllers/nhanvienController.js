@@ -1,5 +1,6 @@
 const NhanVien = require("../models/nhanvien.model");
 const ApiError = require("../api-error");
+const { errorHandlerMiddleware } = require('../middlewares/error.middleware');
 
 // Lấy nhân viên theo ID
 exports.findOne = async (req, res, next) => {
@@ -32,7 +33,11 @@ exports.create = async (req, res, next) => {
   try {
     const nhanvien = new NhanVien(req.body);
     await nhanvien.save();
-    res.json({ message: "Thêm nhân viên thành công", data: nhanvien });
+    res.status(201).json({
+      status: "success",
+      message: "Thêm nhân viên thành công",
+      data: nhanvien
+    });
   } catch (err) {
     next(new ApiError(400, err.message));
   }
@@ -55,21 +60,20 @@ exports.update = async (req, res, next) => {
 };
 
 // Lấy nhân viên theo ID
-exports.getNhanVienById = async (req, res) => {
+exports.getNhanVienById = async (req, res, next) => {
   try {
-    const nhanvien = await NhanVien.findById(req.params.id)
-      // .populate('PhongBan') // nếu muốn join với phòng ban
-      // .populate('ChucVu');  // nếu muốn join với chức vụ
+    const nhanvien = await NhanVien.findById(req.params.id);
 
     if (!nhanvien) {
-      return res.status(404).json({ msg: 'Không tìm thấy nhân viên' });
+      return next(new ApiError(404, "Không tìm thấy nhân viên"));
     }
 
     res.json(nhanvien);
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    next(new ApiError(500, err.message));
   }
 };
+
 
 // Xóa nhân viên theo ID
 exports.delete = async (req, res, next) => {

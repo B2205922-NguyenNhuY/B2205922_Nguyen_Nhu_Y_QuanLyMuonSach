@@ -1,4 +1,5 @@
 const express = require('express');
+const { notFoundMiddleware, errorHandlerMiddleware } = require("./app/middlewares/error.middleware");
 const { connectDB, config } = require('./app/config');
 const ApiError = require("./app/api-error");
 const app = express();
@@ -15,19 +16,13 @@ app.use("/api/sach", require("./app/routes/sach"));
 app.use("/api/nhanvien", require("./app/routes/nhanvien"));
 app.use("/api/docgia", require("./app/routes/docgia"));
 app.use("/api/muonsach", require("./app/routes/theodoimuonsach"));
-//app.use("/api/auth", require("./app/routes/auth"));
+app.use("/api/auth", require("./app/routes/auth"));
 
-// Middleware không tìm thấy route
-app.use((req, res, next) => {
-  next(new ApiError(404, "Resource not found"));
-});
+// Middleware 404
+app.use(notFoundMiddleware);
 
 // Middleware xử lý lỗi chung
-app.use((err, req, res, next) => {
-  res.status(err.statusCode || 500).json({
-    message: err.message || "Internal Server Error",
-  });
-});
+app.use(errorHandlerMiddleware);
 
 
 module.exports = app;
