@@ -44,7 +44,7 @@ exports.getAllSach = async (req, res) => {
 
 exports.getSachById = async (req, res) => {
   try {
-    const sach = await Sach.findById(req.params.id).populate('MaNXB');
+    const sach = await Sach.findById(req.params.id).populate('MaSach');
     if (!sach) return res.status(404).json({ msg: 'Không tìm thấy sách' });
     res.json(sach);
   } catch (err) {

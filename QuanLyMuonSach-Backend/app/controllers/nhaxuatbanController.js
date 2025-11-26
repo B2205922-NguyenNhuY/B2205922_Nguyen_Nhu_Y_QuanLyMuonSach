@@ -57,6 +57,16 @@ exports.update = async (req, res, next) => {
     }
 };
 
+exports.getNXBById = async (req, res) => {
+  try {
+    const nxb = await NXB.findById(req.params.id)
+    if (!nxb) return res.status(404).json({ msg: 'Không tìm thấy nhà xuất bản' });
+    res.json(nxb);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
 // Xóa
 exports.delete = async (req, res, next) => {
     try {
