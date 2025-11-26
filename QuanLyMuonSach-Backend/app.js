@@ -13,7 +13,7 @@ app.get('/', (req, res) => {
 app.use("/api/nhaxuatban", require("./app/routes/nhaxuatban"));
 app.use("/api/sach", require("./app/routes/sach"));
 app.use("/api/nhanvien", require("./app/routes/nhanvien"));
-//app.use("/api/docgia", require("./app/routes/docgia"));
+app.use("/api/docgia", require("./app/routes/docgia"));
 //app.use("/api/muontra", require("./app/routes/muontra"));
 //app.use("/api/auth", require("./app/routes/auth"));
 
